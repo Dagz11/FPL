@@ -146,12 +146,20 @@ def build_position_map(
     bootstrap,
 ):
 
-    return {
-        item["id"]:
-        item["singular_name_short"]
-        for item
-        in bootstrap["element_types"]
-    }
+    position_map = {}
+
+    for item in bootstrap["element_types"]:
+
+        position = item["singular_name_short"]
+
+        # FPL uses "GKP" for goalkeeper.
+        # Internally the engine standardises this as "GK".
+        if position == "GKP":
+            position = "GK"
+
+        position_map[item["id"]] = position
+
+    return position_map
 
 
 def matches_played_by_team(
